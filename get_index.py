@@ -14,5 +14,9 @@ dados_crypto = web.get_data_yahoo(cryptocurrencies, start='2013-01-01', end='202
 indexs = ['IMOEX.ME', '^BVSP', '^MXX', '^BSESN', '^JKSE', 'XU100.IS']
 dados_index = web.get_data_yahoo(indexs, start='2013-01-01', end='2020-01-01')['Adj Close']
 
-dados_index.to_csv('dados_index.csv')
+
 dados_crypto.to_csv('dados_crypto.csv')
+
+for i in indexs:
+    dados_index = web.get_data_yahoo(i, start='2013-01-01', end='2020-01-01')['Adj Close']
+    dados_index.to_csv('{}.csv'.format(i))
