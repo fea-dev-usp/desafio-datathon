@@ -13,7 +13,7 @@ trans_ts_and_get_returns <- function(data_prices){
 #pega o a variação percentual e preenche o primeiro valor com 1
   pct_change_data <- (stock_data/lag(stock_data)) - 1
   
-  pct_change_data <- na.fill(pct_change_data, fill = 1)
+  pct_change_data <- na.fill(pct_change_data, fill = 0)
   
 #cálcula o retorno a partir da variação percentual
   return_data <- prod(pct_change_data + 1)
