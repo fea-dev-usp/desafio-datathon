@@ -20,6 +20,7 @@ get_return <- function(data) {
   
 #cálcula o retorno a partir da variação percentual
   return_data <- prod(pct_change_data + 1)
+  return_data <- (return_data - 1) * 100
   return(return_data)
 }
 
@@ -36,3 +37,14 @@ merg_hongkong_crypto <- merge(dado_hongkong, dado_crypto, join="inner")
 
 cor_hongkong <- cor(merg_hongkong_crypto)
 cor_shangai <- cor(merg_shangai_crypto)
+
+risk_sd <- function(dados){
+  pct_changes <- (dados/lag(dados)) - 1
+  pct_changes <- na.fill(pct_changes, fill = 1)
+  sd_dado <- sd(pct_changes)*100
+  return(sd_dado)
+}
+
+risk_hongkong <- risk_sd(dado_hongkong)
+risk_shangai<- risk_sd(dado_shangai)
+risk_crypto <- risk_sd(dado_crypto)
