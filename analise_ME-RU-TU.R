@@ -29,12 +29,12 @@ crypto_data <- xts(crypto[,-1], order.by=as.Date(crypto[,1], "%Y-%m-%d"))
 
 get_return <- function(data) { 
   data <- trans_ts(data)
-  #pega o a variação percentual e preenche o primeiro valor com 1
+  #pega o a variaÃ§Ã£o percentual e preenche o primeiro valor com 1
   pct_change_data <- (data/lag(data)) - 1
   
   pct_change_data <- na.fill(pct_change_data, fill = 0)
   
-  #cálcula o retorno a partir da variação percentual
+  #cÃ¡lcula o retorno a partir da variaÃ§Ã£o percentual
   return_data <- prod(pct_change_data + 1)
   return(return_data)
 }
@@ -44,7 +44,7 @@ return_russia <- get_return(russia)
 return_turquia <- get_return(turquia)
 return_crypyo <- get_return(crypto_data)  #***
 
-#ajuste de intersecção das datas
+#ajuste de intersecÃ§Ã£o das datas
 merg_mexico_crypto <- merge(mexico_market, crypto_data, join="inner")
 merg_russia_crypto <- merge(russia_market, crypto_data, join="inner")
 merg_turquia_crypto <- merge(turquia_market, crypto_data, join="inner")
