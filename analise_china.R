@@ -32,11 +32,20 @@ dado_shangai <- trans_ts(shangai)
 dado_hongkong <- trans_ts(hong_kong)
 dado_crypto <- trans_ts(crypto)
 
-merg_shangai_crypto <- merge(dado_shangai, dado_crypto, join="inner")
-merg_hongkong_crypto <- merge(dado_hongkong, dado_crypto, join="inner")
+pct_change <- function(dados){
+  pct_changes <- (dados/lag(dados)) - 1
+  pct_changes <- na.fill(pct_changes, fill = 1)
+  return(pct_changes)
+}
+pct_change_crypto <- pct_change(dado_crypto)
+pct_change_shangai <-pct_change(dado_shangai)
+pct_change_hongkong <- pct_change(dado_hongkong)
 
-cor_hongkong <- cor(merg_hongkong_crypto)
-cor_shangai <- cor(merg_shangai_crypto)
+merg_shangai_crypto <- merge(pct_change_shangai, pct_change_crypto, join="inner")
+merg_hongkong_crypto <- merge(pct_change_hongkong, pct_change_crypto, join="inner")
+
+cor_hongkong_geral <- cor(merg_hongkong_crypto)
+cor_shangai_geral <- cor(merg_shangai_crypto)
 
 risk_sd <- function(dados){
   pct_changes <- (dados/lag(dados)) - 1
@@ -44,6 +53,18 @@ risk_sd <- function(dados){
   sd_dado <- sd(pct_changes)*100
   return(sd_dado)
 }
+
+
+#transformando em série mensal(levando em conta o último dia de cada mês)
+transf_mes <- function(dados){
+  dados[endpoints(dados,on='months')]
+}
+
+dados_Shangai <- transf_mes(merg_shangai_crypto)
+dados_Hongkong <- transf_mes(merg_hongkong_crypto)
+
+cor_shangai_mes <- cor(dados_Shangai)
+cor_hongkong_mes <- cor(dados_Hongkong)
 
 risk_hongkong <- risk_sd(dado_hongkong)
 risk_shangai<- risk_sd(dado_shangai)
